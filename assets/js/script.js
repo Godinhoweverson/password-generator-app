@@ -16,6 +16,7 @@ sliderEl.addEventListener("input", (event) => {
 })
 
 
+
 // Get value from checkbox to know what kind of charcters will be sort on password 
 const getValue = () =>{
   const selected = document.getElementsByName('selected');
@@ -25,104 +26,101 @@ const getValue = () =>{
       result.push(Number(selected[i].value))
     }
   }
-
-  generate(result) // pass the value as argument to bntGenerate function
+  return result 
 }
 
-//Used to define how many characters for which type
-const divideIntoRandomArrays = function (elementsCount, arraysCount) {
-  if(arraysCount > 0){
-        // Generate an array with numbers 1 to elementsCount
-    const array = Array.from({ length: elementsCount }, (_, i) => i + 1);
+function distributeValue(array, totalValue) {
+  let arrayLength = array.length
+  const result = Array(arrayLength).fill(0);
 
-    // Shuffle the array using Fisher-Yates algorithm for randomness
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-
-    // Create arraysCount empty arrays
-    const arrays = Array.from({ length: arraysCount }, () => []);
-
-    // Distribute the shuffled elements into the arrays
-    for (let i = 0; i < array.length; i++) {
-        arrays[i % arraysCount].push(array[i]);
-    }
-    // if(arrays.length === 1) {
-    //   getValueUpperCase(arrays[0].length)
-    //   }else if(arrays.length === 2){
-    //   getValueUpperCase(arrays[0].length)
-    //   getValueLowerCase(arrays[1].length)
-    //   }else if(arrays.length === 3){
-    //   getValueUpperCase(arrays[0].length)
-    //   getValueLowerCase(arrays[1].length)
-    //   getValueNumbers(arrays[2].length)
-    //   }else if(arrays.length === 4){
-    //   getValueUpperCase(arrays[0].length)
-    //   getValueLowerCase(arrays[1].length)
-    //   getValueNumbers(arrays[2].length)
-    //   getValueSymbols(arrays[3].length)
-    // }
-    console.log(arrays[0])
-    // console.log(arrays[1])
-    // console.log(arrays[2])
-    // console.log(arrays[3])
-
+  for (let i = 0; i < arrayLength; i++) {
+      result[i] = 1;
+      totalValue--;
   }
- 
-};
 
-const generate = (result) =>{
+  while (totalValue > 0) {
+      const randomIndex = Math.floor(Math.random() * arrayLength);
+      result[randomIndex]++;
+      totalValue--;
+  }
 
+  if(result.length === 1){
+    getValueUpperCase(result[0])
+  }else if(result.length === 2){  
+    getValueUpperCase(result[0])
+    getValueLowerCase(result[1])
+  }else if(result.length === 3){  
+    getValueUpperCase(result[0])
+    getValueLowerCase(result[1])
+    getValueNumbers(result[2])
+   }else if(result.length === 4){  
+    getValueUpperCase(result[0])
+    getValueLowerCase(result[1])
+    getValueNumbers(result[2])
+    getValueSymbols(result[3])   
+  } 
+}
+
+
+const generate = () =>{
   btnGenerate.addEventListener('click', ()=>{
-    divideIntoRandomArrays(tempSliderValue,result.length)
+    distributeValue(getValue(), tempSliderValue)
   })
 }
 
+generate()
 
-const characterLength = function (boxSelected){
-  console.log(chLength)
-  }
 
-const getValueUpperCase = (c) => {
-  let upperCase = []
-  for(let i = 0; i < c; i++){
+let upperCase = [];
+let lowerCase = [];
+let numbers = [];
+let symbols = [];
+let passwordConc = [];
+
+const getValueUpperCase = (result) => {
+ 
+  for(let i = 0; i < result; i++){
     const min = 65;
     const max = 90;
    upperCase.push(Math.floor(Math.random() * (max - min) + min));
   }
-  const result = upperCase; // Store result to return
-  upperCase = []; // Reset the array (not strictly necessary since it's local)
+passwordConc.push(upperCase)
 
 }
-const getValueLowerCase = (c) => {
-  console.log(c)
+const getValueLowerCase = (result) => {
+ 
+  for(let i = 0; i < result; i++){
+    const min = 97;
+    const max = 122;
+    lowerCase.push(Math.floor(Math.random() * (max - min) + min));
+  }
+  passwordConc.push(lowerCase)
 }
-const getValueNumbers = (c) => {
-  console.log(c)
+const getValueNumbers = (result) => {
+
+  for(let i = 0; i < result; i++){
+    const min = 48;
+    const max = 57;
+    numbers.push(Math.floor(Math.random() * (max - min) + min));
+  }
+  passwordConc.push(numbers)
 }
-const getValueSymbols = (c) => {
-  console.log(c)
+const getValueSymbols = (result) => {
+  
+  for(let i = 0; i < result; i++){
+    const min = 58;
+    const max = 77;
+    symbols.push(Math.floor(Math.random() * (max - min) + min));
+  }
+  passwordConc.push(symbols)
 }
 
-//TO KNOW HOW WILL HAVE ON EACH ARRAY WILL BE BASED ON 
-// tempSliderValue / 3 (FOR HOW MANY BOX THE USER SELECTED)
 
-
-//CREATE ARRAY WITH WHAT THE USER CHOICE
-
-// UPPERCASE  65 to 90
-// LOWERCASE  97 to 122
-// NUMBERS 48 to 57
-//SYMBOLS 33 to 47 and 58 to 77
-
+console.log(passwordConc)
 // To get the characters
 // String.fromCharCode(77)
 
 
-// const min = 33;
-// const max = 56
-// Math.floor(Math.random() * (max - min) + min)
 
 
 

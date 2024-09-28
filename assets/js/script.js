@@ -20,13 +20,13 @@ sliderEl.addEventListener("input", (event) => {
 // Get value from checkbox to know what kind of charcters will be sort on password 
 const getValue = () =>{
   const selected = document.getElementsByName('selected');
-  let result = [];
+  let value = [];
   for (let i = 0; i < selected.length; i++){
     if(selected[i].checked){
-      result.push(Number(selected[i].value))
+      value.push(Number(selected[i].value))
     }
   }
-  return result 
+  return value 
 }
 
 function distributeValue(array, totalValue) {
@@ -44,27 +44,31 @@ function distributeValue(array, totalValue) {
       totalValue--;
   }
 
-  if(result.length === 1){
-    getValueUpperCase(result[0])
-  }else if(result.length === 2){  
-    getValueUpperCase(result[0])
-    getValueLowerCase(result[1])
-  }else if(result.length === 3){  
-    getValueUpperCase(result[0])
-    getValueLowerCase(result[1])
-    getValueNumbers(result[2])
-   }else if(result.length === 4){  
-    getValueUpperCase(result[0])
-    getValueLowerCase(result[1])
-    getValueNumbers(result[2])
-    getValueSymbols(result[3])   
-  } 
+  if(tempSliderValue >= array.length){
+    for(let i = 0; i < array.length; i++){
+  
+      if(array[i] === 1){
+        getValueUpperCase(result[i])
+      }
+      else if(array[i] === 2){
+        getValueLowerCase(result[i])
+      }
+      else if(array[i] === 3){
+        getValueNumbers(result[i])
+      }
+      else if(array[i] === 4){
+        getValueSymbols(result[i])
+      }
+    }
+  }else {
+    alert("Sorry! The character length must be equal to or greater than the number of characters you have chosen.")
+  }
 }
-
 
 const generate = () =>{
   btnGenerate.addEventListener('click', ()=>{
     distributeValue(getValue(), tempSliderValue)
+    passwordConc()
   })
 }
 
@@ -75,7 +79,7 @@ let upperCase = [];
 let lowerCase = [];
 let numbers = [];
 let symbols = [];
-let passwordConc = [];
+
 
 const getValueUpperCase = (result) => {
  
@@ -84,8 +88,6 @@ const getValueUpperCase = (result) => {
     const max = 90;
    upperCase.push(Math.floor(Math.random() * (max - min) + min));
   }
-passwordConc.push(upperCase)
-
 }
 const getValueLowerCase = (result) => {
  
@@ -94,7 +96,6 @@ const getValueLowerCase = (result) => {
     const max = 122;
     lowerCase.push(Math.floor(Math.random() * (max - min) + min));
   }
-  passwordConc.push(lowerCase)
 }
 const getValueNumbers = (result) => {
 
@@ -103,7 +104,7 @@ const getValueNumbers = (result) => {
     const max = 57;
     numbers.push(Math.floor(Math.random() * (max - min) + min));
   }
-  passwordConc.push(numbers)
+
 }
 const getValueSymbols = (result) => {
   
@@ -112,11 +113,20 @@ const getValueSymbols = (result) => {
     const max = 77;
     symbols.push(Math.floor(Math.random() * (max - min) + min));
   }
-  passwordConc.push(symbols)
+
 }
 
+const passwordConc = function(){
+  console.log(upperCase)
+  console.log(lowerCase)
+  console.log(numbers)
+  console.log(symbols)
+  upperCase = []
+  lowerCase = []
+  numbers = []
+  symbols = []
+}
 
-console.log(passwordConc)
 // To get the characters
 // String.fromCharCode(77)
 

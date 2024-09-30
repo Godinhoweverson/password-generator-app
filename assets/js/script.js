@@ -1,7 +1,26 @@
 const sliderEl = document.querySelector("#range")
 const sliderValue = document.querySelector(".value")
 const btnGenerate = document.getElementById('btn-generate')
+const passwordInput = document.querySelector('.password-input')
+const tooWeak = document.querySelector('.tooWeak')
+const weak = document.querySelector('.weak')
+const medium = document.querySelector('.medium')
+const strong = document.querySelector('.strong')
+const levelCategory = document.querySelector('.level-category')
+const active = document.querySelector('.active')
+const clipboard = document.querySelector('.clipboard')
 
+// Error Message
+const config = {
+  cor:'#A4FFAF'
+}
+const BoxMsg = new Boxmsg(config);
+
+//This function is used to set the background color based on
+// how many types of characters the user selects. on level boxes
+const strengthLevelColor = () =>{
+
+}
 
 // RANGE,  GET VALUE FROM RANGE INPUT
 let tempSliderValue = 0
@@ -14,8 +33,6 @@ sliderEl.addEventListener("input", (event) => {
   sliderEl.style.background = `linear-gradient(to right, #A4FFAF ${progress}%, #18171F ${progress}%)`;
 
 })
-
-
 
 // Get value from checkbox to know what kind of charcters will be sort on password 
 const getValue = () =>{
@@ -49,37 +66,41 @@ function distributeValue(array, totalValue) {
   
       if(array[i] === 1){
         getValueUpperCase(result[i])
+        tooWeak.style.backgroundColor = '#FF0000'
+        levelCategory.innerHTML = 'TOO WEAK!'
       }
       else if(array[i] === 2){
         getValueLowerCase(result[i])
+        tooWeak.style.backgroundColor = '#FF8C00'
+        weak.style.backgroundColor = '#FF8C00'
+        levelCategory.innerHTML = 'WEAK'
       }
       else if(array[i] === 3){
         getValueNumbers(result[i])
+        tooWeak.style.backgroundColor = '#FFFF00'
+        weak.style.backgroundColor = '#FFFF00'
+        medium.style.backgroundColor = '#FFFF00'
+        levelCategory.innerHTML = 'MEDIUM'
       }
       else if(array[i] === 4){
         getValueSymbols(result[i])
+        tooWeak.style.backgroundColor = '#A4FFAF'
+        weak.style.backgroundColor = '#A4FFAF'
+        medium.style.backgroundColor = '#A4FFAF'
+        strong.style.backgroundColor = '#A4FFAF'
+        levelCategory.innerHTML = 'STRONG'
       }
     }
   }else {
-    alert("Sorry! The character length must be equal to or greater than the number of characters you have chosen.")
-  }
+    BoxMsg.display('Sorry 🥺', "The character length must be equal to or greater than the number of characters you have chosen.")
+    }
 }
 
-const generate = () =>{
-  btnGenerate.addEventListener('click', ()=>{
-    distributeValue(getValue(), tempSliderValue)
-    passwordConc()
-  })
-}
-
-generate()
-
-
+// Create new arrays based on the user choice
 let upperCase = [];
 let lowerCase = [];
 let numbers = [];
 let symbols = [];
-
 
 const getValueUpperCase = (result) => {
  
@@ -89,6 +110,7 @@ const getValueUpperCase = (result) => {
    upperCase.push(Math.floor(Math.random() * (max - min) + min));
   }
 }
+
 const getValueLowerCase = (result) => {
  
   for(let i = 0; i < result; i++){
@@ -97,6 +119,7 @@ const getValueLowerCase = (result) => {
     lowerCase.push(Math.floor(Math.random() * (max - min) + min));
   }
 }
+
 const getValueNumbers = (result) => {
 
   for(let i = 0; i < result; i++){
@@ -106,6 +129,7 @@ const getValueNumbers = (result) => {
   }
 
 }
+
 const getValueSymbols = (result) => {
   
   for(let i = 0; i < result; i++){
@@ -117,22 +141,36 @@ const getValueSymbols = (result) => {
 }
 
 const passwordConc = function(){
-  console.log(upperCase)
-  console.log(lowerCase)
-  console.log(numbers)
-  console.log(symbols)
+  const passwordArrayValues = [...upperCase,...lowerCase,...numbers,...symbols]
   upperCase = []
   lowerCase = []
   numbers = []
   symbols = []
+  let passwordArr = [];
+passwordArrayValues.forEach((el) =>{
+ passwordArr.push(String.fromCharCode(el))
+
+})
+
+let password = passwordArr.toString().replaceAll(',', '');
+console.log(password)
+passwordInput.innerHTML = password
+clipboardPassword(password)
 }
 
-// To get the characters
-// String.fromCharCode(77)
+const clipboardPassword = (password) => {
+  clipboard.addEventListener('click', () =>{
+    navigator.clipboard.writeText(password)
+    active.innerHTML = 'COPIED'
+  })
+}
 
+const generate = () =>{
+  btnGenerate.addEventListener('click', ()=>{
+    distributeValue(getValue(), tempSliderValue)
+    passwordConc()
+  })
+}
 
-
-
-
-
+generate()
 

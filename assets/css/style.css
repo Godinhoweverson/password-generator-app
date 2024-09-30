@@ -207,11 +207,12 @@ input[type="checkbox"] {
 }
 
 .level{
-    justify-content: space-between !important;
-    width: 39.52%;
+    justify-content:flex-end !important;
+    width: 60%;
 }
 
 .level-category{
+    text-align: end;
     width:52.41%;
     font-size: 24px;
     font-weight: 800;
@@ -219,7 +220,7 @@ input[type="checkbox"] {
 
 .level-boxes{
     margin-left: 10px;
-    width: 47.59%;
+    width: 25%;
     justify-content: space-between !important;
 }
 
